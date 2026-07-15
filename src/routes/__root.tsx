@@ -1,6 +1,6 @@
 import { createRootRoute, Outlet, Link, useNavigate, useLocation } from '@tanstack/react-router'
 import { useEffect } from 'react'
-import { LayoutDashboard, ShoppingCart, Package, AlertTriangle, FileText, LogOut } from 'lucide-react'
+import { LayoutDashboard, ShoppingCart, AlertTriangle, FileText, LogOut } from 'lucide-react'
 import { Toaster } from '@/components/ui/sonner'
 import { Button } from '@/components/ui/button'
 import { useAuthStore } from '@/store/useAuthStore'
