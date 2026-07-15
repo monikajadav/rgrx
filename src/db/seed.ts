@@ -1,4 +1,4 @@
-import { db } from './index';
+export {};
 
 async function seed() {
   console.log('🌱 Starting database seed...');
