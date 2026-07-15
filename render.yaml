@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: rgrx-backend
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        sync: false # Requires manual setup in the Render dashboard if using external DB
