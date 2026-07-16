@@ -1,6 +1,6 @@
 import { createRootRoute, Outlet, Link, useNavigate, useLocation } from '@tanstack/react-router'
 import { useEffect } from 'react'
-import { LayoutDashboard, ShoppingCart, AlertTriangle, FileText, LogOut } from 'lucide-react'
+import { LayoutDashboard, ShoppingCart, AlertTriangle, FileText, LogOut, ArrowLeft } from 'lucide-react'
 import { Toaster } from '@/components/ui/sonner'
 import { Button } from '@/components/ui/button'
 import { useAuthStore } from '@/store/useAuthStore'
@@ -73,12 +73,24 @@ function RootLayout() {
       {/* Main Content */}
       <main className="flex-1 flex flex-col h-screen overflow-hidden">
         {/* Topbar */}
-        <header className="h-16 bg-card border-b border-border flex items-center justify-between px-6 shrink-0">
-          <div className="flex items-center flex-1 max-w-2xl">
-            {/* Header Content can go here */}
+        <header className="h-16 bg-card border-b border-border flex items-center justify-between px-4 md:px-6 shrink-0">
+          <div className="flex items-center flex-1 gap-1 md:gap-4 overflow-x-auto no-scrollbar">
+            {/* Mobile Nav */}
+            <Button variant="ghost" size="icon" className="md:hidden text-muted-foreground shrink-0" onClick={() => window.history.back()}>
+              <ArrowLeft size={20} />
+            </Button>
+            <div className="md:hidden flex items-center gap-1 border-l pl-2 border-border">
+              <Link to="/" className="p-2 text-muted-foreground hover:text-foreground" activeProps={{ className: "text-primary" }}><LayoutDashboard size={20} /></Link>
+              <Link to="/pos" className="p-2 text-muted-foreground hover:text-foreground" activeProps={{ className: "text-primary" }}><ShoppingCart size={20} /></Link>
+              <Link to="/expiry" className="p-2 text-muted-foreground hover:text-foreground" activeProps={{ className: "text-primary" }}><AlertTriangle size={20} /></Link>
+            </div>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="text-sm font-medium text-muted-foreground">{username || 'Admin'}</div>
+          <div className="flex items-center gap-2 md:gap-4 shrink-0">
+            <div className="text-sm font-medium text-muted-foreground hidden sm:block">{username || 'Admin'}</div>
+            {/* Mobile Logout Button */}
+            <Button variant="ghost" size="icon" className="text-destructive md:hidden" onClick={() => { logout(); navigate({ to: '/login' }) }}>
+              <LogOut size={20} />
+            </Button>
           </div>
         </header>
 
