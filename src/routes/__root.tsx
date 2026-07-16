@@ -83,6 +83,7 @@ function RootLayout() {
               <Link to="/" className="p-2 text-muted-foreground hover:text-foreground" activeProps={{ className: "text-primary" }}><LayoutDashboard size={20} /></Link>
               <Link to="/pos" className="p-2 text-muted-foreground hover:text-foreground" activeProps={{ className: "text-primary" }}><ShoppingCart size={20} /></Link>
               <Link to="/expiry" className="p-2 text-muted-foreground hover:text-foreground" activeProps={{ className: "text-primary" }}><AlertTriangle size={20} /></Link>
+              <Link to="/reports" className="p-2 text-muted-foreground hover:text-foreground" activeProps={{ className: "text-primary" }}><FileText size={20} /></Link>
             </div>
           </div>
           <div className="flex items-center gap-2 md:gap-4 shrink-0">

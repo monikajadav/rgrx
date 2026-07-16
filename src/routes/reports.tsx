@@ -62,12 +62,35 @@ function Reports() {
       setLoading(false)
     }
   }
+  const exportBlankTemplate = () => {
+    try {
+      const headers = ['Date', 'Day of Week', 'Cash Earned', 'Online Earned', 'Spent on Orders', 'Pending Amount'];
+      const ws = XLSX.utils.aoa_to_sheet([headers]);
+      
+      // Style the header row
+      const range = XLSX.utils.decode_range(ws['!ref'] || 'A1:F1');
+      for (let C = range.s.c; C <= range.e.c; ++C) {
+        const address = XLSX.utils.encode_col(C) + '1';
+        if (!ws[address]) continue;
+        ws[address].s = { font: { bold: true } };
+      }
+
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Blank_Template');
+      
+      XLSX.writeFile(wb, `RGRx_Blank_Template.xlsx`);
+      toast.success('Blank template downloaded successfully.');
+    } catch (err) {
+      console.error(err);
+      toast.error('Failed to export template');
+    }
+  }
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto mt-10">
       <div className="text-center space-y-2">
         <h2 className="text-3xl font-bold text-primary tracking-tight">Financial Reports</h2>
-        <p className="text-muted-foreground">Download your complete financial ledger history.</p>
+        <p className="text-muted-foreground">Download your complete financial ledger history or a blank template.</p>
       </div>
 
       <Card className="border-border shadow-sm bg-card mt-8 max-w-md mx-auto">
@@ -77,7 +100,7 @@ function Reports() {
           </div>
           <CardTitle className="text-xl">Export Ledger</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-6 text-center">
+        <CardContent className="space-y-4 text-center">
           <p className="text-sm text-muted-foreground">
             Generate an Excel (.xlsx) file containing all daily financial records, including cash flow, online earnings, and expenses.
           </p>
@@ -89,8 +112,15 @@ function Reports() {
             {loading ? (
               <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Generating...</>
             ) : (
-              <><Download className="mr-2 h-5 w-5" /> Download Full Financial Report (.xlsx)</>
+              <><Download className="mr-2 h-5 w-5" /> Download Full Financial Report</>
             )}
+          </Button>
+          <Button 
+            variant="outline"
+            className="w-full h-12" 
+            onClick={exportBlankTemplate}
+          >
+            <Download className="mr-2 h-5 w-5 text-muted-foreground" /> Download Blank Template
           </Button>
         </CardContent>
       </Card>
