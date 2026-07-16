@@ -39,14 +39,21 @@ function Login() {
   const handleSetup = async () => {
     setLoading(true)
     try {
-      const res = await fetch(`${API_BASE_URL}/api/auth/setup`, {
+      const targetUrl = `${API_BASE_URL}/api/auth/setup`;
+      const res = await fetch(targetUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
       })
       if (!res.ok) {
-        const data = await res.json()
-        throw new Error(data.error)
+        let errorMsg = `Server error: ${res.status}`;
+        try {
+          const data = await res.json()
+          if (data.error) errorMsg = data.error;
+        } catch {
+          errorMsg = `Failed to connect to backend at ${targetUrl}. Status: ${res.status}`;
+        }
+        throw new Error(errorMsg)
       }
       toast.success('Admin account created! You can now log in.')
       setHasAdmin(true)
@@ -60,16 +67,27 @@ function Login() {
   const handleLogin = async () => {
     setLoading(true)
     try {
-      const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
+      const targetUrl = `${API_BASE_URL}/api/auth/login`;
+      const res = await fetch(targetUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
       })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error)
 
+      if (!res.ok) {
+        let errorMsg = `Server error: ${res.status}`;
+        try {
+          const data = await res.json()
+          if (data.error) errorMsg = data.error;
+        } catch {
+          errorMsg = `Failed to connect to backend at ${targetUrl}. Status: ${res.status}`;
+        }
+        throw new Error(errorMsg)
+      }
+
+      const data = await res.json()
       login(data.token, data.username)
-      toast.success('Welcome back!')
+      toast.success('Logged in successfully!')
       navigate({ to: '/' })
     } catch (e: any) {
       toast.error(e.message || 'Login failed')
