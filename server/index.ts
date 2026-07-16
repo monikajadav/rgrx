@@ -59,9 +59,9 @@ app.post('/api/auth/setup', async (req, res) => {
       await db.insert(adminUser).values({ username: username || 'admin', passwordHash });
     }
     res.json({ success: true });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Auth setup error:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: 'Internal Server Error', details: error.message });
   }
 });
 
